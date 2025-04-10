@@ -1,17 +1,45 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Formation_C_
 {
     internal class Program
     {
+        public struct QCM
+        {
+            public string Question;
+            public string Reponse1;
+            public string Reponse2;
+            public string Reponse3;
+            public string Reponse4;
+            public char Bonne_reponse;
+            public int valeur;
+        }
+        public enum ReponsePossible
+        {
+            A,
+            B,
+            C,
+            D,
+        }
+
+        public List<string> Reponses = new List<string>()
+        { "A", "B", "C", "D"};
+
+
         static void Main(string[] args)
         {
+
             BasicOperation(4, 5, '+');
             IntegerDivision(13, -4);
             Pow(2, 4);
@@ -37,6 +65,18 @@ namespace Formation_C_
             Addition(tabA, tabB);
             Substraction(tabA, tabB);
             Multiplication(tabA, tabB);
+            Qcm();
+            QCM Question1;
+            Question1.Question = "Combien fait 1 + 1 ?";
+            Question1.Reponse1 = " A. 0";
+            Question1.Reponse2 = " B. 1";
+            Question1.Reponse3 = " C. 2";
+            Question1.Reponse4 = " D. 8000";
+            Question1.Bonne_reponse = 'C';
+            Question1.valeur = 1;
+
+            QcmValidity(Question1);
+            AskQuestion(Question1);
             Console.ReadKey();
         }
 
@@ -192,7 +232,7 @@ namespace Formation_C_
                 return Factorial(n - 1) * n;
 
             }
-            Console.WriteLine(Res);
+        //    Console.WriteLine(Res);
 
         }
 
@@ -279,7 +319,7 @@ namespace Formation_C_
 
             for (int i = 0; i < rightVector.Length; i++)
             {
-                
+
                 int res = 0;
                 res = rightVector[i] * leftVector[0];
                 Tab1[i] = res;
@@ -287,7 +327,7 @@ namespace Formation_C_
             }
             for (int i = 0; i < rightVector.Length; i++)
             {
-                
+
                 int res = 0;
                 res = rightVector[i] * leftVector[1];
                 Tab2[i] = res;
@@ -295,7 +335,7 @@ namespace Formation_C_
             }
             for (int i = 0; i < rightVector.Length; i++)
             {
-                
+
                 int res = 0;
                 res = rightVector[i] * leftVector[2];
                 Tab3[i] = res;
@@ -311,12 +351,12 @@ namespace Formation_C_
             int[] TabAdd1 = new int[3];
             int[] TabAdd2 = new int[3];
 
-            for (int i = 0;i <= TabA.Length;i++) 
+            for (int i = 0; i <= TabA.Length; i++)
             {
                 int res = 0;
                 res = TabA[0][i] + TabB[0][i];
                 TabAdd1[i] = res;
-             
+
             }
             for (int i = 0; i <= TabA.Length; i++)
             {
@@ -326,7 +366,7 @@ namespace Formation_C_
 
             }
 
-            int[][] TabAddTot = new int[][] {TabAdd1, TabAdd2};
+            int[][] TabAddTot = new int[][] { TabAdd1, TabAdd2 };
             return TabAddTot;
         }
         static int[][] Substraction(int[][] TabA, int[][] TabB)
@@ -357,7 +397,7 @@ namespace Formation_C_
             int[] Tabmul1 = new int[3];
             int[] Tabmul2 = new int[3];
             int[] Tabmul3 = new int[3];
-           
+
 
             for (int i = 0; i <= TabA.Length; i++)
             {
@@ -380,8 +420,132 @@ namespace Formation_C_
                 Tabmul3[i] = res;
 
             }
-            int[][] TabmulTot = new int[][] {Tabmul1, Tabmul2, Tabmul3 };
+            int[][] TabmulTot = new int[][] { Tabmul1, Tabmul2, Tabmul3 };
             return TabmulTot;
         }
+        static int Qcm()
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine("Comment se nomme l'INTM ?");
+            Console.WriteLine("A.INTM  B.AZERTY   C.01001010   D.La réponse D");
+            Console.WriteLine("Saisir la bonne réponse ici");
+            String réponse = Console.ReadLine();
+            Console.WriteLine("réponse : " + réponse);
+            int score = 0;
+            if (réponse == "A")
+            {
+                Console.WriteLine("Bonne réponse !");
+                score = 1;
+                Console.WriteLine("score " + score + "/1");
+
+            }
+            else if (réponse == "B")
+            {
+                Console.WriteLine("Mauvaise réponse");
+                Console.WriteLine("score " + score + "/1");
+
+            }
+            else if (réponse == "C")
+            {
+                Console.WriteLine("Mauvaise réponse");
+                Console.WriteLine("score " + score + "/1");
+
+            }
+            else if (réponse == "D")
+            {
+                Console.WriteLine("Mauvaise réponse");
+                Console.WriteLine("score " + score + "/1");
+
+            }
+            else
+            {
+                Console.WriteLine("Réponse invalide");
+                return Qcm();
+            }
+            return score;
+        }
+        static bool QcmValidity(QCM Question1)
+        {
+            bool verif = false;
+            if (string.IsNullOrWhiteSpace(Question1.Question))
+            {
+                Console.WriteLine("aucune question");
+                return verif;
+
+            }
+            else if (string.IsNullOrWhiteSpace(Question1.Reponse1))
+            {
+                Console.WriteLine("Reponse 1 manquante");
+                return verif;
+
+            }
+            else if (string.IsNullOrWhiteSpace(Question1.Reponse2))
+            {
+                Console.WriteLine("Reponse 2 manquante");
+                return verif;
+
+            }
+            else if (string.IsNullOrEmpty(Question1.Reponse3))
+            {
+                Console.WriteLine("reponse 3 manquante");
+                return verif;
+
+            }
+            else if (string.IsNullOrEmpty(Question1.Reponse4))
+            {
+                Console.WriteLine("Reponse 4 manquante");
+                return verif;
+
+            }
+            else if (Question1.Bonne_reponse != 'A' && Question1.Bonne_reponse != 'B' && Question1.Bonne_reponse != 'C' && Question1.Bonne_reponse != 'D')
+            {
+                Console.WriteLine("Réponse invalide !");
+                return verif;
+            }
+            else if (Question1.valeur < 0)
+            {
+                Console.WriteLine("Question sans valeur");
+                return verif;
+            }
+            else
+            {
+                verif = true;
+                Console.WriteLine("QCM OK !");
+                return verif;
+            }
+          
+        }
+
+
+        static int AskQuestion(QCM Question1)
+        {
+           List<string> Reponses = new List<string>(){ "A", "B", "C", "D"};
+        int score = 0;
+            Console.WriteLine(Question1.Question);   
+            Console.WriteLine(Question1.Reponse1 + " " + Question1.Reponse2 + " " + Question1.Reponse3 + " " + Question1.Reponse4);
+            string réponse = Console.ReadLine();
+            if (Reponses.Contains(réponse))
+            {
+            }
+            else
+            {
+                Console.WriteLine("Réponse invalide");
+                return AskQuestion(Question1);
+            }
+
+            if (réponse == Question1.Bonne_reponse.ToString())
+            {
+                score = 1;
+                Console.WriteLine("Bonne réponse !");
+            }
+            else
+            {
+                score = 0;
+                Console.WriteLine("Mauvaise réponse !");
+            }
+            Console.WriteLine(score);
+            return score;
+        }
+
     }
 }
