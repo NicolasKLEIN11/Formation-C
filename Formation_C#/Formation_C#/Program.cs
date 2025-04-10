@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,15 @@ namespace Formation_C_
             IntegerDivision(13, -4);
             Pow(2, 4);
             GoodDay(16);
-           // PyramideConstruction(10, "Smooth");
+            PyramideConstruction(10, false);
+            Console.WriteLine(Factorial(6));
+            int[] tableau = new int[] { 1, -5, 10, -3, 0, 4, 2, -7 };
+            LinearSearch(tableau, 2);
+            BinarySearch(tableau, 4);
+            int[] LeftVector = new int[] { 1, 2, 3 };
+            int[] RightVector = new int[] { -1, -4, 0 };
+            BuildingMatrix(LeftVector, RightVector);
+            int[,] tabA = new int[3, 2] { { 1, 2 }, { 4, 6 }, { -1, 8 } }; 
             Console.ReadKey();
         }
 
@@ -77,17 +86,17 @@ namespace Formation_C_
             int r = 0;
             if (b != 0)
             {
-                 r = (int)Math.Pow(a, b);
+                r = (int)Math.Pow(a, b);
                 Console.WriteLine($" {a} ^ {b} = {r} ");
             }
             else
             {
                 Console.WriteLine(" Opération invalide");
-             }
+            }
         }
         static void GoodDay(int heure)
         {
-            switch(heure)
+            switch (heure)
             {
                 case int h when h < 6:
                     Console.WriteLine($"Il est {heure} heure, Merveilleuse nuit ! ");
@@ -107,7 +116,181 @@ namespace Formation_C_
 
             }
         }
-        //static void PyramideConstruction(int n, bool is Smooth)
+        static void PyramideConstruction(int n, bool isSmooth)
+        {
+            int j = n;
+            int nbDePlus = 1;
+            int nbDeSpace = n - 1;
+            if (isSmooth == true)
+            {
+                for (int etage = 1; etage <= n; etage++)
+                {
+                    for (int nbDeSpaceAff = n - etage - 1; nbDeSpaceAff >= 0; nbDeSpaceAff--)
+                    {
+                        Console.Write(' ');
+                    }
+                    for (int nbDePlusaAff = 1; nbDePlusaAff <= nbDePlus; nbDePlusaAff++)
+                    {
+                        Console.Write('+');
 
+                    }
+                    nbDePlus = nbDePlus + 2;
+                    Console.WriteLine();
+                }
+
+
+            }
+            else
+            {
+                for (int etage = 1; etage <= n; etage++)
+                {
+                    char symbole = '+';
+                    int reste = (etage % 2);
+                    if (reste == 0)
+                    {
+                        symbole = '-';
+
+                    }
+                    for (int nbDeSpaceAff = n - etage - 1; nbDeSpaceAff >= 0; nbDeSpaceAff--)
+                    {
+                        Console.Write(' ');
+                    }
+                    for (int nbDePlusaAff = 1; nbDePlusaAff <= nbDePlus; nbDePlusaAff++)
+                    {
+                        Console.Write(symbole);
+
+                    }
+                    nbDePlus = nbDePlus + 2;
+                    Console.WriteLine();
+                }
+
+            }
+        }
+        static int Factorial(int n)
+        {
+            int Res = 1;
+            if (n <= 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return Factorial(n - 1) * n;
+
+            }
+            Console.WriteLine(Res);
+
+        }
+
+        //   static int Factorial(int n)
+        //   {
+        //       int Res = 1;
+        //       for (int nb = 1; nb <= n; nb ++ )
+        //       {
+        //           Res = Res * nb;
+        //       }
+        //       Console.WriteLine(Res);
+        //       return Res;
+        //   }
+
+        static int LinearSearch(int[] tableau, int valeur)
+        {
+            int indice = -1;
+            for (int i = 0; i < tableau.Length; i++)
+            {
+                if (tableau[i] == valeur)
+                {
+                    indice = i;
+
+                    break;
+
+                }
+                else
+                {
+
+                }
+
+            }
+            Console.WriteLine(indice);
+            return indice;
+
+        }
+
+        static int BinarySearch(int[] tableau, int valeur)
+        {
+            Array.Sort(tableau);
+            int indice = -1;
+            int i = (tableau.Length) / 2;
+            if (tableau[i] == valeur)
+            {
+                indice = i;
+
+            }
+            else if (tableau[i] > valeur)
+            {
+                int[] tableau2 = new int[tableau.Length / 2];
+
+                for (int j = 0; j < i; j++)
+                {
+                    int val = tableau[j];
+                    tableau2[j] = val;
+
+                }
+                return BinarySearch(tableau2, valeur);
+            }
+            else
+            {
+                int[] tableau2 = new int[tableau.Length / 2];
+                int indice2 = 0;
+                for (int j = i; j < (tableau.Length); j++)
+                {
+                    int val = tableau[j];
+
+                    tableau2[indice2] = val;
+                    indice2 = indice2 + 1;
+
+                }
+                return BinarySearch(tableau2, valeur);
+            }
+            Console.WriteLine(indice);
+            return indice;
+
+        }
+
+        static int[][] BuildingMatrix(int[] leftVector, int[] rightVector)
+        {
+            int[] Tab1 = new int[3];
+            int[] Tab2 = new int[3];
+            int[] Tab3 = new int[3];
+
+            for (int i = 0; i < rightVector.Length; i++)
+            {
+                
+                int res = 0;
+                res = rightVector[i] * leftVector[0];
+                Tab1[i] = res;
+
+            }
+            for (int i = 0; i < rightVector.Length; i++)
+            {
+                
+                int res = 0;
+                res = rightVector[i] * leftVector[1];
+                Tab2[i] = res;
+
+            }
+            for (int i = 0; i < rightVector.Length; i++)
+            {
+                
+                int res = 0;
+                res = rightVector[i] * leftVector[2];
+                Tab3[i] = res;
+
+            }
+            int[][] Matrix = new int[3][] { Tab1, Tab2, Tab3 };
+            Console.WriteLine(Matrix);
+            return Matrix;
+        }
+                                          
     }
 }
