@@ -24,7 +24,17 @@ namespace Formation_C_
             int[] LeftVector = new int[] { 1, 2, 3 };
             int[] RightVector = new int[] { -1, -4, 0 };
             BuildingMatrix(LeftVector, RightVector);
-            int[,] tabA = new int[3, 2] { { 1, 2 }, { 4, 6 }, { -1, 8 } }; 
+            int[][] tabA = new int[][]
+                {
+                new int[] { 1, 4, -1 },
+                new int[] { 2, 6, 8 }
+                };
+            int[][] tabB = new int[][]
+                {
+                new int[] { -1, -4, 0 },
+                new int[] { 5, 0, 2 }
+                };
+            Addition(tabA, tabB);
             Console.ReadKey();
         }
 
@@ -291,6 +301,29 @@ namespace Formation_C_
             Console.WriteLine(Matrix);
             return Matrix;
         }
-                                          
+
+        static int[][] Addition(int[][] TabA, int[][] TabB)
+        {
+            int[] TabAdd1 = new int[3];
+            int[] TabAdd2 = new int[3];
+
+            for (int i = 0;i <= TabA.Length;i++) 
+            {
+                int res = 0;
+                res = TabA[0][i] + TabB[0][i];
+                TabAdd1[i] = res;
+             
+            }
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = TabA[1][i] + TabB[1][i];
+                TabAdd2[i] = res;
+
+            }
+
+            int[][] TabAddTot = new int[][] {TabAdd1, TabAdd2};
+            return TabAddTot;
+        }                                 
     }
 }
