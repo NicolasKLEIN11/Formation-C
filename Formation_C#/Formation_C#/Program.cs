@@ -35,6 +35,8 @@ namespace Formation_C_
                 new int[] { 5, 0, 2 }
                 };
             Addition(tabA, tabB);
+            Substraction(tabA, tabB);
+            Multiplication(tabA, tabB);
             Console.ReadKey();
         }
 
@@ -126,6 +128,8 @@ namespace Formation_C_
 
             }
         }
+        // Pour un niveau j, le nombre de bloc est = j x 2 - 1
+        // au niveau N = 20, il y aura 19 blocs
         static void PyramideConstruction(int n, bool isSmooth)
         {
             int j = n;
@@ -225,7 +229,7 @@ namespace Formation_C_
             return indice;
 
         }
-
+        // en methode linéaire, 8 recherches max
         static int BinarySearch(int[] tableau, int valeur)
         {
             Array.Sort(tableau);
@@ -266,7 +270,7 @@ namespace Formation_C_
             return indice;
 
         }
-
+        // dichotomique, 4 recherches max, c'est la plus efficaces
         static int[][] BuildingMatrix(int[] leftVector, int[] rightVector)
         {
             int[] Tab1 = new int[3];
@@ -324,6 +328,60 @@ namespace Formation_C_
 
             int[][] TabAddTot = new int[][] {TabAdd1, TabAdd2};
             return TabAddTot;
-        }                                 
+        }
+        static int[][] Substraction(int[][] TabA, int[][] TabB)
+        {
+            int[] Tabsub1 = new int[3];
+            int[] Tabsub2 = new int[3];
+
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = TabA[0][i] - TabB[0][i];
+                Tabsub1[i] = res;
+
+            }
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = TabA[1][i] - TabB[1][i];
+                Tabsub2[i] = res;
+
+            }
+
+            int[][] TabsubTot = new int[][] { Tabsub1, Tabsub2 };
+            return TabsubTot;
+        }
+        static int[][] Multiplication(int[][] TabA, int[][] TabB)
+        {
+            int[] Tabmul1 = new int[3];
+            int[] Tabmul2 = new int[3];
+            int[] Tabmul3 = new int[3];
+           
+
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = (TabA[0][0] * TabB[0][i]) + (TabA[1][0] * TabB[1][i]);
+                Tabmul1[i] = res;
+
+            }
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = (TabA[0][1] * TabB[0][i]) + (TabA[1][1] * TabB[1][i]);
+                Tabmul2[i] = res;
+
+            }
+            for (int i = 0; i <= TabA.Length; i++)
+            {
+                int res = 0;
+                res = (TabA[0][2] * TabB[0][i]) + (TabA[1][2] * TabB[1][i]);
+                Tabmul3[i] = res;
+
+            }
+            int[][] TabmulTot = new int[][] {Tabmul1, Tabmul2, Tabmul3 };
+            return TabmulTot;
+        }
     }
 }
