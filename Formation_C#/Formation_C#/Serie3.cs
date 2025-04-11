@@ -13,12 +13,14 @@ namespace Formation_C_
     {
         public void serie3()
         {
-            SchoolMeans("C:\\formation\\serie3ent.txt", "C:\\formation\\serie3sor.txt");
-            int[] TabA = new int[] { 4, 8, 2, 9, 3, 9, 4, 7, 6, 1};
-           
-            InsertionSort(TabA);
+  //          SchoolMeans("C:\\formation\\serie3ent.txt", "C:\\formation\\serie3sor.txt");
+            int[] TabA = new int[] { 6, 4, 8, 2, 9, 3, 9, 4, 7, 6, 1 };
+  //          Array.Sort(TabA);
+  //          InsertionSort(TabA);
+            Quicksort(TabA);
         }
-
+       
+               
         static void SchoolMeans(string inpout, string output)
         {
             double MoyMath = 0;
@@ -85,9 +87,43 @@ namespace Formation_C_
         
 
         }
-        static void InsertionSort(int[] array)
+        static void InsertionSort(int[] TabA)
         {
-            for (int i = 0; i < TabA.lenght )
+            for (int i = 1; i < TabA.Length; i++)
+            {
+                if (TabA[i] < TabA[i-1])
+                {
+                   int a = 0;
+                   a = TabA[i];
+                   TabA[i] = TabA[i - 1];
+                   TabA[i-1] = a;
+                   i = 0;
+                    
+                }
+                
+            }
+            
+        }
+        static void Quicksort(int[] TabA)
+        {
+            int Pivot = TabA[0];
+            int j = 0;
+            int k = 0;
+            int[] TabB = new int[TabA.Length];
+            int[] TabC = new int[TabA.Length];
+            for (int i = 0; i < TabA.Length; i++)
+            {
+                if (TabA[i] <= Pivot)
+                {                                        
+                    TabB[j] = TabA[i];
+                    j = j + 1;
+                }
+                else
+                {                                        
+                    TabC[k] = TabA[i];
+                    k = k + 1;
+                }
+            }
         }
     }
 }
