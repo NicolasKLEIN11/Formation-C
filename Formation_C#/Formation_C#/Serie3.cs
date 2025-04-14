@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -16,12 +18,13 @@ namespace Formation_C_
         {
             //          SchoolMeans("C:\\formation\\serie3ent.txt", "C:\\formation\\serie3sor.txt");
             int[] TabA = new int[] { 6, 4, 8, 2, 9, 3, 9, 4, 7, 6, 1 };
-            // AfficherTab(TabA);
+            AfficherTab(TabA);
             //          Array.Sort(TabA);
             // InsertionSort(TabA);
             //          Quicksort(TabA);
-            // AfficherTab(TabA);
-                        
+            UseInsertionSort(TabA);
+            AfficherTab(TabA);
+
             string[] morseAlph = { "=.==", "==.=.=.=", "==.=.==.=", "==.=.=", "=", "=.=.==.=", "==.==.=", "=.=.=.=", "=.=", "=.==.==.==", "==.=.==", "=.==.=.=", "==.==", "==.=", "==.==.==", "=.==.==.=", "==.==.=.==", "=.==.=", "=.=.=", "==", "=.=.==", "=.=.=.==", "=.==.==", "==.=.=.==", "==.=.==.==", "==.==.=.=" };
             char[] alphabetAlph = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             Dictionary<string, char> morse = new Dictionary<string, char>();
@@ -177,6 +180,41 @@ namespace Formation_C_
          //   Quicksort(TabB);
          //   Quicksort(TabC);
         }
+        static long UseInsertionSort(int[] TabA)
+        {
+            long tps = 0;
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            for (int i = 1; i < TabA.Length; i++)
+            {
+                if (TabA[i] < TabA[i - 1])
+                {
+                    int a = 0;
+                    a = TabA[i];
+                    TabA[i] = TabA[i - 1];
+                    TabA[i - 1] = a;
+                    i = 0;
+
+                }
+
+            }
+            stopWatch.Stop();
+            Console.WriteLine(stopWatch.Elapsed.ToString());
+
+            
+            return tps;
+        }
+        // il est important de réaliser plusieurs test car la durée d'execution peut varier d'un test à l'autre, il ets ainsi necessaire de faire une moyenne
+        // le temps d'execution varie en fonction des autres programmes qui fonctionne en même temps sur l'ordinateur
+
+
+
+
+        // ici commence la serie IV 
+
+        // le dictionnaire permet de faire la correspondance entre une valeur en string et une valeur en char via les indices dans les tableaux
 
         static int LettersCount(string code)
         {
