@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Perco
+namespace Percolation
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            Percolation percolation = new Percolation(6);
+
+                     
         }
     }
 }
