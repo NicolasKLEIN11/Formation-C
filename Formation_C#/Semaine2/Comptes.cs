@@ -47,7 +47,7 @@ namespace Semaine2
 
         public decimal HistoriqueVirement(decimal montant)
         {
-            decimal cumul = montant;
+            decimal cumul = 0;
             int limite = 0;
                 if (_historiqueVir.Count > 9)
                 {
@@ -80,7 +80,7 @@ namespace Semaine2
         }
         public bool Verificationretrait (decimal montant)
         {
-            if (montant < 0)
+            if (montant <= 0)
             {
                 return false;
             }
@@ -92,7 +92,7 @@ namespace Semaine2
             {
                 return false;
             }
-            else if (_sommeVir >= 1000)
+            else if (montant + _sommeVir >= 1000)
             {
                 return false;
             }
@@ -112,6 +112,7 @@ namespace Semaine2
         {
             _soldeCompte = _soldeCompte - montant;
             _historiqueVir.Add(montant);
+            HistoriqueVirement(montant);
         }
     }
 }

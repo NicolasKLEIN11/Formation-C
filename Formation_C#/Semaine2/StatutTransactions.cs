@@ -27,4 +27,5 @@ namespace Semaine2
             _statut = statut;
         }
     }
+
 }

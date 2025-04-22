@@ -48,5 +48,5 @@ namespace Semaine2
             _idDestinataire = IdDestinataire;
            _statut = false;
         }             
-    }
+    } 
 }

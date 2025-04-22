@@ -12,8 +12,8 @@ namespace Semaine2
     {
         static void Main(string[] args)
         {
-            string inpoutComptes = "C:\\formation\\Comptes.txt";
-            string inpoutTransactions = "C:\\formation\\Transactions.txt";
+            string inpoutComptes = "C:\\formation\\Comptes_1.txt";
+            string inpoutTransactions = "C:\\formation\\Transactions_1.txt";
             Banque banque = new Banque();
             List<Comptes> comptes = banque.CreaComptes(inpoutComptes);
             List<Transactions> transactions = banque.CreaTransactions(inpoutTransactions);

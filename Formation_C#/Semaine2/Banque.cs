@@ -24,28 +24,62 @@ namespace Semaine2
             {
                 string ligne;
                 while ((ligne = reader.ReadLine()) != null)
-                {
+                {                                 
+
                     string[] tableauComptes = ligne.Split(';');
                     idCompte = int.Parse(tableauComptes[0]);
-                    if (tableauComptes[1] == " ") //string.IsNullOrWhiteSpace(tableauComptes[1])
-                    {
-                        soldeCompte = 0;
-                    }
+
+                    if (VerifCreaCompte(comptes, idCompte))
+
+                  {
+                       Console.WriteLine("erreur, le compte " + idCompte + " existe déjà");
+                  }
                     else
                     {
-                        soldeCompte = decimal.Parse(tableauComptes[1]);
-                    }
+                        
+                        if (tableauComptes[1] == " " || tableauComptes[1] == "") //string.IsNullOrWhiteSpace(tableauComptes[1])
+                        {
+                            soldeCompte = 0;
+                        }
+                        else
+                        {
+                            soldeCompte = decimal.Parse(tableauComptes[1]);
 
-                    Comptes compte = new Comptes(idCompte, soldeCompte);
-                    Console.WriteLine(" compte numero " + idCompte + " solde initial : " + soldeCompte);
-                    comptes.Add(compte);
+                        }
+
+                        if (soldeCompte >= 0)
+                        {
+                            Comptes compte = new Comptes(idCompte, soldeCompte);
+                            Console.WriteLine(" compte numero " + idCompte + " solde initial : " + soldeCompte);
+                            comptes.Add(compte);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" erreur pour la création du compte " + idCompte + " : solde négatif");
+                        }
+                    }
                 }
 
             }
 
             return comptes;
         }
-
+        internal bool VerifCreaCompte(List<Comptes> comptes, int idCompte)
+        {
+            foreach (Comptes compte in comptes)
+            {
+                if (compte.IdCompte == idCompte)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            return false;
+        }
         internal List<Transactions> CreaTransactions(string inpout)
         {
             int idCompte = 0;
@@ -75,7 +109,9 @@ namespace Semaine2
         }
         internal bool FaireTransaction(List<Comptes> comptes, List<Transactions> transactions)
         {
-            bool transactionOk = false;
+            using (StreamWriter writer = new StreamWriter("C:\\formation\\StatutTransactions.txt"))
+            { 
+                bool transactionOk = false;
             foreach (Transactions transaction in transactions)
             {
                 transactionOk = false;
@@ -92,6 +128,8 @@ namespace Semaine2
                             //compte.SoldeCompte += transaction.Montant;
                             compte.Depot(transaction.Montant);
                             transactionOk = true;
+
+            
                         }
 
                     }
@@ -108,6 +146,8 @@ namespace Semaine2
                             {
                                 compte.Retrait(transaction.Montant);
                                 transactionOk = true;
+
+
                             }
                         }
 
@@ -123,35 +163,49 @@ namespace Semaine2
                     //    return false;
                     //}
                 }
-                if (transaction.IDexpediteur != 0 && transaction.IDdestinataire != 0)
-                {
-                    foreach(Comptes compte in comptes)
-                        if (compte.IdCompte == transaction.IDexpediteur)
+                    if (transaction.IDexpediteur != 0 && transaction.IDdestinataire != 0)
+                    {
+                        int idExpediteur = -1;
+                        int idDestinataire = -1;
+                        for (int i = 0; i < comptes.Count; i++)
                         {
-                            if (compte.Verificationretrait(transaction.Montant) == true) 
+                            if (comptes[i].IdCompte == transaction.IDexpediteur)
                             {
-                                compte.Retrait(transaction.Montant);
-                                transactionOk = true;
-
-
+                                idExpediteur = i;
                             }
-                            else
-                            { 
+                            if (comptes[i].IdCompte == transaction.IDdestinataire)
+                            {
+                                idDestinataire = i;
                             }
+
                         }
 
-                    foreach (Comptes compte in comptes)
-                        if (compte.IdCompte == transaction.IDdestinataire)
+                        //Code 
+                        if (comptes[idExpediteur].Verificationretrait(transaction.Montant))
                         {
+                            comptes[idExpediteur].Retrait(transaction.Montant);
+                            transactionOk = true;
 
-                        //compte.SoldeCompte += transaction.Montant;
-                        compte.Depot(transaction.Montant);
-                        transactionOk = true;
+                            if (comptes[idDestinataire].VerificationDepot(transaction.Montant))
+                            {
+                                comptes[idDestinataire].Depot(transaction.Montant); 
+                                transactionOk = true;
+                            }
                         }
+                        
+                       
+                    }
 
+                    if (transactionOk == true)
+                    {
+                        writer.WriteLine(transaction.IDcompte + ";OK");
+                        
+                    }
+                    else
+                    {
+                        writer.WriteLine(transaction.IDcompte + ";KO");
+                    }
                 }
-
-                
             }
 
 /*            for (int i = 0; i < transactions.Count; i++)
@@ -186,8 +240,8 @@ namespace Semaine2
                 }
             }*/
             
-
-            return transactionOk;
+            return false;
+            
         }
     }
 }
