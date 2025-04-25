@@ -8,31 +8,35 @@ namespace Projet.Partie2
 {
     public class Gestionnaires
     {
-        private readonly int _idGestionnaire;
-        private readonly string _typeGestionnaire;
+        private int _idGestionnaire;
+        private string _typeGestionnaire;
         private readonly int _nbTransaction;
+        
 
         public int IdGestionnaire
         {
             get { return _idGestionnaire;}
+            set { _idGestionnaire = value; }
         }
 
-        public int TypeGestionnaire
+        public string TypeGestionnaire
         {
-            get { return _idGestionnaire;}
+            get { return _typeGestionnaire;}
+            set { _typeGestionnaire = "value"; }
         }
 
         public int nbTransaction
         {
             get { return _nbTransaction; }
+           
         }
 
-        public Gestionnaires(int IdGestionnaire, string TypeGestionnaire, int nbTransaction )
+       
+        public Gestionnaires(int IdGestionnaire, string TypeGestionnaire, int nbTransaction)
         {
             _idGestionnaire = IdGestionnaire;
             _typeGestionnaire = TypeGestionnaire;
             _nbTransaction = nbTransaction;
         }
-
     }
 }

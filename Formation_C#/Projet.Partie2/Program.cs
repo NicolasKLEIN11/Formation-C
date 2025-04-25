@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Projet.Partie2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,12 +13,15 @@ namespace Semaine2
     {
         static void Main(string[] args)
         {
-            string inpoutComptes = "C:\\formation2\\ComptesP2.txt";
-            string inpoutTransactions = "C:\\formation2\\TransactionsP2.txt";
+            string inpoutComptes = "C:\\formation2\\comptesP2.txt";
+            string inpoutTransactions = "C:\\formation2\\transactionsP2.txt";
+            string inpoutGestionnaires = "C:\\formation2\\gestionnaires.txt";
             Banque banque = new Banque();
-            List<Comptes> comptes = banque.CreaComptes(inpoutComptes);
+            List<Gestionnaires> gestionnaires = banque.CreaGestionnaires(inpoutGestionnaires);
+            List<Comptes> comptes = banque.CreaComptes(inpoutComptes, gestionnaires);
             List<Transactions> transactions = banque.CreaTransactions(inpoutTransactions);
-            banque.FaireTransaction(comptes, transactions);
+            banque.FaireTransaction(comptes, transactions, gestionnaires);
+            banque.Compteur(transactions);
             Console.ReadKey();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Projet.Partie2;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,31 +13,33 @@ namespace Semaine2
     {
 
         private readonly int _idCompte;
-        private readonly string _dateCrea;
-        private readonly string _dateCloture;
-        private readonly string _dateTransfert;
+        private readonly DateTime _dateCrea;
+        private DateTime _dateCloture;
+        private DateTime _dateTransfert;
         private decimal _soldeCompte;
         private readonly List<decimal> _historiqueVir;
         private decimal _sommeVir;
+        private Gestionnaires _gestionnaire;
 
         public int IdCompte
         {
             get { return _idCompte; }
         }
 
-        public string DateCrea
+        public DateTime DateCrea
         {
             get { return _dateCrea; }
         }
 
-        public string DateCloture
+        public DateTime DateCloture
         {
             get { return _dateCloture; }
+            set { _dateCloture = value; }
         }
-
-        public string DateTransfert 
+        public DateTime DateTransfert 
         {
             get { return _dateTransfert; }
+            set { _dateTransfert = value; }
         }
         public decimal SoldeCompte
         {
@@ -54,16 +57,22 @@ namespace Semaine2
             get { return _sommeVir; }
             set { _sommeVir = value; }
         }
+        public Gestionnaires Gestionnaire
+        {
+            get { return _gestionnaire; }
+            set { _gestionnaire = value; }
+        }
 
-        public Comptes(int idCompte, decimal soldeCompte, string dateCrea, string dateCloture, string dateTransfert)
+        public Comptes(int idCompte, DateTime dateCrea, DateTime dateCloture, DateTime DateTransfert,decimal soldeCompte, Gestionnaires Gestionnaire)
         {
             _idCompte = idCompte;
             _dateCrea = dateCrea;
             _dateCloture = dateCloture;
             _soldeCompte = soldeCompte;
-            _dateTransfert = dateTransfert;
+            _dateTransfert = DateTransfert;
             _historiqueVir = new List<decimal>();
             _sommeVir = SommeVir;
+            _gestionnaire = Gestionnaire;
         }
 
         public decimal HistoriqueVirement(decimal montant)
@@ -86,20 +95,25 @@ namespace Semaine2
             SommeVir = cumul;
             return SommeVir;
         }
-           public bool VerificationDepot(decimal montant)
+           public bool VerificationDepot(decimal montant, DateTime DateTransaction)
         {
-            
-            if (montant == 0)
-            { 
-                return false; 
+
+            if (montant <= 0)
+            {
+                return false;
             }
-            else 
-            { 
-                return true; 
+            else if (DateTransaction < _dateCrea || DateTransaction > _dateCloture)
+            {
+                return false;
+            }
+
+            else
+            {
+                return true;
             }
 
         }
-        public bool Verificationretrait (decimal montant)
+        public bool Verificationretrait (decimal montant, DateTime DateTransaction)
         {
             if (montant <= 0)
             {
@@ -113,7 +127,11 @@ namespace Semaine2
             {
                 return false;
             }
-            else if (montant + _sommeVir >= 1000)
+            else if (montant + _sommeVir > 1000)
+            {
+                return false;
+            }
+            else if (DateTransaction < _dateCrea || DateTransaction > _dateCloture)
             {
                 return false;
             }
